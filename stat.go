@@ -98,7 +98,15 @@ func printErrorPatterns() error {
 			c uint
 		}{p, c})
 	}
+	// sort descending by counts
+	// sort ascending by first and second string
 	sort.Slice(ep, func(i, j int) bool {
+		if ep[i].c == ep[j].c {
+			if ep[i].p.first == ep[j].p.first {
+				return ep[i].p.second < ep[j].p.second
+			}
+			return ep[i].p.first < ep[j].p.first
+		}
 		return ep[i].c > ep[j].c
 	})
 	if _, err := fmt.Printf("Errors: %d\n", total); err != nil {
