@@ -130,5 +130,6 @@ func countsToString(counts map[byte]uint) string {
 	i := counts[lev.Ins]
 	d := counts[lev.Del]
 	res := float64(c) / float64(c+s+i+d)
-	return fmt.Sprintf("Acc=c/(c+s+i+d)=%d/(%d+%d+%d+%d)=%f", c, c, s, i, d, res)
+	return fmt.Sprintf("Acc=c/(c+s+i+d)=%d/(%d+%d+%d+%d)=%f",
+		c, c, s, i, d, res)
 }
