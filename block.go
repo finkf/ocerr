@@ -61,13 +61,12 @@ func makeBlock(buf []string) (block, error) {
 }
 
 func printBlock(b block, w io.Writer) error {
-	var err error
 	if len(b.fn) > 0 {
-		_, err = fmt.Fprintf(w, "%s\n%s\n%s\n%s\n%s\n",
-			b.fn, b.a.S1, b.a.Trace, b.a.S2, endOfBlock)
-	} else {
-		_, err = fmt.Fprintf(w, "%s\n%s\n%s\n%s\n",
-			b.a.S1, b.a.Trace, b.a.S2, endOfBlock)
+		if _, err := fmt.Fprintln(w, b.fn); err != nil {
+			return err
+		}
 	}
+	_, err := fmt.Fprintf(w, "%s\n%s\n%s\n%s\n",
+		b.a.S1, b.a.Trace, b.a.S2, endOfBlock)
 	return err
 }
