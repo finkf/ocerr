@@ -17,6 +17,7 @@ var (
 func init() {
 	rootCmd.AddCommand(&alignCmd)
 	rootCmd.AddCommand(&splitCmd)
+	rootCmd.AddCommand(&statCmd)
 	rootCmd.AddCommand(&catCmd)
 }
 

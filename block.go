@@ -15,8 +15,8 @@ const (
 )
 
 type block struct {
-	a  lev.Alignment
-	fn string
+	a         lev.Alignment
+	fn, stats string
 }
 
 type readBlocksFunc func(block) error
@@ -51,13 +51,9 @@ func makeBlock(buf []string) (block, error) {
 		b.fn = buf[0]
 		buf = buf[1:]
 	}
-	b.a.S1 = buf[0]
-	b.a.Trace = buf[1]
-	b.a.S2 = buf[2]
-	if len(b.a.S1) != len(b.a.Trace) || len(b.a.S2) != len(b.a.Trace) {
-		return block{}, fmt.Errorf("invalid block: %v", buf)
-	}
-	return b, nil
+	a, err := lev.NewAlignment(buf[0], buf[2], buf[1])
+	b.a = a
+	return b, err
 }
 
 func printBlock(b block, w io.Writer) error {
@@ -66,7 +62,11 @@ func printBlock(b block, w io.Writer) error {
 			return err
 		}
 	}
+	trace := string(b.a.Trace)
+	if b.stats != "" {
+		trace += " " + b.stats
+	}
 	_, err := fmt.Fprintf(w, "%s\n%s\n%s\n%s\n",
-		b.a.S1, b.a.Trace, b.a.S2, endOfBlock)
+		string(b.a.S1), trace, string(b.a.S2), endOfBlock)
 	return err
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"strings"
 
 	"github.com/finkf/lev"
 	"github.com/spf13/cobra"
@@ -36,12 +35,23 @@ func split(cmd *cobra.Command, args []string) error {
 
 func splitBlocks(b block) error {
 	i := 0
-	for j := strings.IndexAny(b.a.S1[i:], splitCharSet); j > 0; {
+	for j := indexAny(b.a.S1[i:], splitCharSet); j > 0; {
 		printBlock(splitBlock(b, i, j), os.Stdout)
 		i, j = nextSplitBlock(b, splitCharSet, i, j)
 	}
 	printBlock(splitBlock(b, i, len(b.a.S1)), os.Stdout)
 	return nil
+}
+
+func indexAny(rs []rune, set string) int {
+	for i, r := range rs {
+		for _, c := range set {
+			if r == c {
+				return i
+			}
+		}
+	}
+	return -1
 }
 
 func splitBlock(b block, i, j int) block {
@@ -57,7 +67,7 @@ func splitBlock(b block, i, j int) block {
 
 func nextSplitBlock(b block, set string, i, j int) (int, int) {
 	i = j + 1
-	j = strings.IndexAny(b.a.S1[i:], splitCharSet)
+	j = indexAny(b.a.S1[i:], splitCharSet)
 	if j == -1 {
 		return i, j
 	}
