@@ -11,11 +11,12 @@ import (
 )
 
 var (
-	testUpdateGoldFile = false
+	updateGoldFiles = false
 )
 
 func init() {
-	flag.BoolVar(&testUpdateGoldFile, "update", false, "update gold files")
+	flag.BoolVar(&updateGoldFiles, "update",
+		false, "update gold files")
 }
 
 type subCmdFunc func(*cobra.Command, []string) error
@@ -58,7 +59,7 @@ func runSubCmd(t *testing.T, f subCmdFunc, args []string) string {
 
 func checkGoldFile(t *testing.T, gold, got string) {
 	// update the gold file with the given output
-	if testUpdateGoldFile {
+	if updateGoldFiles {
 		outfile := filepath.Join("testdata", gold)
 		if err := ioutil.WriteFile(outfile, []byte(got), os.ModePerm); err != nil {
 			t.Fatalf("got error: %v", err)
