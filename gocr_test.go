@@ -34,7 +34,13 @@ func withInput(t *testing.T, fn string, f subCmdFunc) subCmdFunc {
 	}
 }
 
-func runSubCmd(t *testing.T, f subCmdFunc, args []string) string {
+func withArgs(f subCmdFunc, args ...string) subCmdFunc {
+	return func(cmd *cobra.Command, xx []string) error {
+		return f(cmd, args)
+	}
+}
+
+func runSubCmd(t *testing.T, f subCmdFunc) string {
 	t.Helper()
 	oldStdout := os.Stdout
 	r, w, err := os.Pipe()
@@ -43,7 +49,7 @@ func runSubCmd(t *testing.T, f subCmdFunc, args []string) string {
 	}
 	defer func() { _ = r.Close() }()
 	os.Stdout = w
-	if err = f(nil, args); err != nil {
+	if err = f(nil, nil); err != nil {
 		t.Fatalf("got error: %v", err)
 	}
 	if err = w.Close(); err != nil {
@@ -84,16 +90,15 @@ func TestSubCmds(t *testing.T) {
 	tests := []struct {
 		gold string
 		f    subCmdFunc
-		args []string
 	}{
-		{"cat_gold.txt", cat, []string{"testdata/0001.gt.txt", "testdata/0002.gt.txt"}},
-		{"align_gold.txt", withInput(t, "cat_gold.txt", align), nil},
-		{"split_gold.txt", withInput(t, "align_gold.txt", split), nil},
-		{"stat_gold.txt", withInput(t, "align_gold.txt", stat), nil},
+		{"cat_gold.txt", withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")},
+		{"align_gold.txt", withInput(t, "cat_gold.txt", align)},
+		{"split_gold.txt", withInput(t, "align_gold.txt", split)},
+		{"stat_gold.txt", withInput(t, "align_gold.txt", stat)},
 	}
 	for _, tc := range tests {
 		t.Run(tc.gold, func(t *testing.T) {
-			got := runSubCmd(t, tc.f, tc.args)
+			got := runSubCmd(t, tc.f)
 			checkGoldFile(t, tc.gold, got)
 		})
 	}
