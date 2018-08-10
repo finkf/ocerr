@@ -16,19 +16,16 @@ var (
 		RunE:  stat,
 		Args:  cobra.ExactArgs(0),
 	}
-	global = make(map[byte]uint)
-	local  = make(map[byte]uint)
+	statGlobal = make(map[byte]uint)
+	statLocal  = make(map[byte]uint)
+	statMax    = 0
 )
 
 // Args: --max (max number of stats 0=all)
 //       --error-stats print error stats
 func init() {
-	// catCmd.Flags().StringVarP(&catPattern1, "p1", "1",
-	// 	catPattern1, "set regex pattern for first input file")
-	// catCmd.Flags().StringVarP(&catReplacePattern, "p2", "2",
-	// 	catReplacePattern, "set replacement pattern for second input file")
-	// catCmd.Flags().BoolVarP(&catFileName, "file-names", "f",
-	// 	false, "output first filename")
+	statCmd.Flags().IntVarP(&statMax, "max", "m",
+		0, "set maximal number of printed error patterns")
 }
 
 func stat(cmd *cobra.Command, args []string) error {
@@ -38,21 +35,21 @@ func stat(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Printf("global: %s\n", countsToString(global))
+	_, err = fmt.Printf("global: %s\n", countsToString(statGlobal))
 	return err
 }
 
 func statBlock(b block) error {
 	// clear local stats
 	for _, b := range []byte{lev.Del, lev.Sub, lev.Ins, lev.Nop} {
-		local[b] = 0
+		statLocal[b] = 0
 	}
 	for i := 0; i < len(b.a.Trace); i++ {
 		op := b.a.Trace[i]
-		local[op]++
-		global[op]++
+		statLocal[op]++
+		statGlobal[op]++
 	}
-	b.stats = countsToString((local))
+	b.stats = countsToString((statLocal))
 	return printBlock(b, os.Stdout)
 }
 
