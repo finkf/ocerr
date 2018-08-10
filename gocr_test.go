@@ -21,7 +21,7 @@ func init() {
 
 type subCmdFunc func(*cobra.Command, []string) error
 
-func withInput(t *testing.T, fn string, f subCmdFunc) subCmdFunc {
+func withInput(t *testing.T, f subCmdFunc, fn string) subCmdFunc {
 	t.Helper()
 	in, err := os.Open(filepath.Join("testdata", fn))
 	if err != nil {
@@ -91,10 +91,11 @@ func TestSubCmds(t *testing.T) {
 		gold string
 		f    subCmdFunc
 	}{
-		{"cat_gold.txt", withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")},
-		{"align_gold.txt", withInput(t, "cat_gold.txt", align)},
-		{"split_gold.txt", withInput(t, "align_gold.txt", split)},
-		{"stat_gold.txt", withInput(t, "align_gold.txt", stat)},
+		{"cat_gold.txt",
+			withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")},
+		{"align_gold.txt", withInput(t, align, "cat_gold.txt")},
+		{"split_gold.txt", withInput(t, split, "align_gold.txt")},
+		{"stat_gold.txt", withInput(t, stat, "align_gold.txt")},
 	}
 	for _, tc := range tests {
 		t.Run(tc.gold, func(t *testing.T) {
