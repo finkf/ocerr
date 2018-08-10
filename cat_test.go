@@ -19,7 +19,20 @@ func init() {
 
 type subCmdFunc func(*cobra.Command, []string) error
 
-func runSubCmd(t *testing.T, sin *os.File, f subCmdFunc, args ...string) string {
+func withInput(t *testing.T, fn string, f subCmdFunc) subCmdFunc {
+	t.Helper()
+	in, err := os.Open(fn)
+	if err != nil {
+		t.Fatalf("got error: %v", err)
+	}
+	return func(cmd *cobra.Command, args []string) error {
+		os.Stdin = in
+		defer in.Close()
+		return f(cmd, args)
+	}
+}
+
+func runSubCmd(t *testing.T, f subCmdFunc, args ...string) string {
 	t.Helper()
 	oldStdout := os.Stdout
 	r, w, err := os.Pipe()
@@ -28,7 +41,6 @@ func runSubCmd(t *testing.T, sin *os.File, f subCmdFunc, args ...string) string 
 	}
 	defer func() { _ = r.Close() }()
 	os.Stdout = w
-	os.Stdin = sin
 	if err = f(nil, args); err != nil {
 		t.Fatalf("got error: %v", err)
 	}
@@ -66,16 +78,11 @@ func checkGoldFile(t *testing.T, gold, got string) {
 }
 
 func TestCatCmd(t *testing.T) {
-	got := runSubCmd(t, nil, cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")
+	got := runSubCmd(t, cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")
 	checkGoldFile(t, "testdata/cat_output_gold.txt", got)
 }
 
 func TestAlignCmd(t *testing.T) {
-	in, err := os.Open("testdata/cat_output_gold.txt")
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	defer in.Close()
-	got := runSubCmd(t, in, align)
+	got := runSubCmd(t, withInput(t, "testdata/cat_output_gold.txt", align))
 	checkGoldFile(t, "testdata/align_output_gold.txt", got)
 }
