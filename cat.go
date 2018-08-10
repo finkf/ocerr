@@ -4,9 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"os"
-	"path/filepath"
+	"regexp"
 
 	"github.com/spf13/cobra"
 )
@@ -20,12 +19,18 @@ var (
 		RunE:  cat,
 		//		Args:  cobra.ExactArgs(0),
 	}
-	ext = ".txt"
+	catPattern1       = `\.gt\.txt$`
+	catReplacePattern = ".txt"
+	catFileName       = false
 )
 
 func init() {
-	catCmd.Flags().StringVarP(&ext, "ext", "e",
-		ext, "set extension for other input file")
+	catCmd.Flags().StringVarP(&catPattern1, "p1", "1",
+		catPattern1, "set regex pattern for first input file")
+	catCmd.Flags().StringVarP(&catReplacePattern, "p2", "2",
+		catReplacePattern, "set replacement pattern for second input file")
+	catCmd.Flags().BoolVarP(&catFileName, "file-names", "f",
+		false, "output first filename")
 }
 
 func cat(cmd *cobra.Command, args []string) error {
@@ -39,21 +44,21 @@ func cat(cmd *cobra.Command, args []string) error {
 }
 
 func catFiles(f1, f2 string, out io.Writer) error {
-	log.Printf("f1 = %s, f2 = %s", f1, f2)
 	in1, err := os.Open(f1)
 	if err != nil {
 		return err
 	}
 	defer func() { _ = in1.Close() }()
+
 	in2, err := os.Open(f2)
 	if err != nil {
 		return err
 	}
 	defer func() { _ = in2.Close() }()
-	return catReaders(in1, in2, out)
+	return catReaders(f1, in1, in2, out)
 }
 
-func catReaders(in1, in2 io.Reader, out io.Writer) error {
+func catReaders(fn string, in1, in2 io.Reader, out io.Writer) error {
 	s1 := bufio.NewScanner(in1)
 	s2 := bufio.NewScanner(in2)
 	for {
@@ -65,10 +70,21 @@ func catReaders(in1, in2 io.Reader, out io.Writer) error {
 		if !ok {
 			return err
 		}
-		if _, err := fmt.Fprintf(out, "%s\n%s\n", t1, t2); err != nil {
+		if err := print2lines(fn, t1, t2, out); err != nil {
 			return err
 		}
 	}
+}
+
+func print2lines(fn, t1, t2 string, out io.Writer) error {
+
+	if catFileName {
+		if _, err := fmt.Println(fn); err != nil {
+			return err
+		}
+	}
+	_, err := fmt.Fprintf(out, "%s\n%s\n", t1, t2)
+	return err
 }
 
 func nextNonEmptyLine(s *bufio.Scanner) (string, bool, error) {
@@ -81,7 +97,11 @@ func nextNonEmptyLine(s *bufio.Scanner) (string, bool, error) {
 	return "", false, s.Err()
 }
 
+var catRegexPattern *regexp.Regexp
+
 func otherFileName(f1 string) string {
-	ext1 := filepath.Ext(f1)
-	return f1[0:len(f1)-len(ext1)] + ext
+	if catRegexPattern == nil {
+		catRegexPattern = regexp.MustCompile(catPattern1)
+	}
+	return catRegexPattern.ReplaceAllString(f1, catReplacePattern)
 }
