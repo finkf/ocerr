@@ -1,0 +1,24 @@
+Pium latine ˖ Grece ſeluiũ ˖
+|||||||||||||||||||||||||||| Acc=c/(c+s+i+d)=28/(28+0+0+0)=1.000000
+Pium latine ˖ Grece ſeluiũ ˖
+
+¶ Der maiſt~er Platearius
+#||||||||||+|||-||||||||| Acc=c/(c+s+i+d)=22/(22+1+1+1)=0.880000
+( Der maiſt er ~latearius
+
+ſpricht das epich ſei haiſz vñ truck
+|||||||||||||||||||||||||||||||||||| Acc=c/(c+s+i+d)=36/(36+0+0+0)=1.000000
+ſpricht das epich ſei haiſz vñ truck
+
+vnd tru~cken in dem zwaiten grad
+||||||#+|||||||||-|||||||||||||- Acc=c/(c+s+i+d)=28/(28+1+1+2)=0.875000
+vnd trr cken in d~m zwaiten gra~
+
+Global: Acc=c/(c+s+i+d)=114/(114+2+2+3)=0.942149
+Errors: 7
+2:	{~}	{ }
+1:	{P}	{~}
+1:	{d}	{~}
+1:	{e}	{~}
+1:	{u}	{r}
+1:	{¶}	{(}

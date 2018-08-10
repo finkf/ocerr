@@ -88,6 +88,7 @@ func TestSubCmds(t *testing.T) {
 		{"cat_gold.txt", cat, []string{"testdata/0001.gt.txt", "testdata/0002.gt.txt"}},
 		{"align_gold.txt", withInput(t, "cat_gold.txt", align), nil},
 		{"split_gold.txt", withInput(t, "align_gold.txt", split), nil},
+		{"stat_gold.txt", withInput(t, "align_gold.txt", stat), nil},
 	}
 	for _, tc := range tests {
 		t.Run(tc.gold, func(t *testing.T) {
