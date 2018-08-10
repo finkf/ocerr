@@ -27,8 +27,6 @@ type spair struct {
 	first, second string
 }
 
-// Args: --max (max number of stats 0=all)
-//       --error-stats print error stats
 func init() {
 	statCmd.Flags().IntVarP(&statMax, "max", "m",
 		0, "set maximal number of printed error patterns (0=all, -1=none)")
