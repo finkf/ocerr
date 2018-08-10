@@ -32,7 +32,7 @@ func withInput(t *testing.T, fn string, f subCmdFunc) subCmdFunc {
 	}
 }
 
-func runSubCmd(t *testing.T, f subCmdFunc, args ...string) string {
+func runSubCmd(t *testing.T, f subCmdFunc, args []string) string {
 	t.Helper()
 	oldStdout := os.Stdout
 	r, w, err := os.Pipe()
@@ -77,12 +77,19 @@ func checkGoldFile(t *testing.T, gold, got string) {
 	}
 }
 
-func TestCatCmd(t *testing.T) {
-	got := runSubCmd(t, cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")
-	checkGoldFile(t, "testdata/cat_output_gold.txt", got)
-}
-
-func TestAlignCmd(t *testing.T) {
-	got := runSubCmd(t, withInput(t, "testdata/cat_output_gold.txt", align))
-	checkGoldFile(t, "testdata/align_output_gold.txt", got)
+func TestSubCmds(t *testing.T) {
+	tests := []struct {
+		gold string
+		f    subCmdFunc
+		args []string
+	}{
+		{"testdata/cat_output_gold.txt", cat, []string{"testdata/0001.gt.txt", "testdata/0002.gt.txt"}},
+		{"testdata/align_output_gold.txt", withInput(t, "testdata/cat_output_gold.txt", align), nil},
+	}
+	for _, tc := range tests {
+		t.Run(tc.gold, func(t *testing.T) {
+			got := runSubCmd(t, tc.f, tc.args)
+			checkGoldFile(t, tc.gold, got)
+		})
+	}
 }
