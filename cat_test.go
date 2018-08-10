@@ -69,3 +69,13 @@ func TestCatCmd(t *testing.T) {
 	got := runSubCmd(t, nil, cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")
 	checkGoldFile(t, "testdata/cat_output_gold.txt", got)
 }
+
+func TestAlignCmd(t *testing.T) {
+	in, err := os.Open("testdata/cat_output_gold.txt")
+	if err != nil {
+		t.Fatalf("got error: %v", err)
+	}
+	defer in.Close()
+	got := runSubCmd(t, in, align)
+	checkGoldFile(t, "testdata/align_output_gold.txt", got)
+}
