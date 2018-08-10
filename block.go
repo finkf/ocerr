@@ -30,7 +30,7 @@ func readBlocks(r io.Reader, f readBlocksFunc) error {
 			buf = append(buf, str)
 			continue
 		}
-		b, err := makeBlock(buf)
+		b, err := newBlock(buf)
 		if err != nil {
 			return err
 		}
@@ -42,7 +42,7 @@ func readBlocks(r io.Reader, f readBlocksFunc) error {
 	return s.Err()
 }
 
-func makeBlock(buf []string) (block, error) {
+func newBlock(buf []string) (block, error) {
 	if len(buf) > maxBlockLines || len(buf) < minBlockLines {
 		return block{}, fmt.Errorf("invalid block: %v", buf)
 	}
@@ -56,7 +56,7 @@ func makeBlock(buf []string) (block, error) {
 	return b, err
 }
 
-func printBlock(b block, w io.Writer) error {
+func writeBlock(b block, w io.Writer) error {
 	if len(b.fn) > 0 {
 		if _, err := fmt.Fprintln(w, b.fn); err != nil {
 			return err

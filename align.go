@@ -32,7 +32,7 @@ func align(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return err
 		}
-		printBlock(block{fn: fn, a: a}, os.Stdout)
+		writeBlock(block{fn: fn, a: a}, os.Stdout)
 		return nil
 	})
 }

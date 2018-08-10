@@ -36,10 +36,10 @@ func split(cmd *cobra.Command, args []string) error {
 func splitBlocks(b block) error {
 	i := 0
 	for j := indexAny(b.a.S1[i:], splitCharSet); j > 0; {
-		printBlock(splitBlock(b, i, j), os.Stdout)
+		writeBlock(splitBlock(b, i, j), os.Stdout)
 		i, j = nextSplitBlock(b, splitCharSet, i, j)
 	}
-	printBlock(splitBlock(b, i, len(b.a.S1)), os.Stdout)
+	writeBlock(splitBlock(b, i, len(b.a.S1)), os.Stdout)
 	return nil
 }
 
