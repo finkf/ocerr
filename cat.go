@@ -16,8 +16,8 @@ var (
 		Long: `Concatenate pairs of files and output them ` +
 			`in a way for the align command to consume`,
 		Short: `Concatenate pairs of files`,
+		Args:  cobra.MinimumNArgs(1),
 		RunE:  cat,
-		//		Args:  cobra.ExactArgs(0),
 	}
 	catPattern1       = `\.gt\.txt$`
 	catReplacePattern = ".txt"
