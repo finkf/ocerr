@@ -21,7 +21,6 @@ var (
 	}
 	catPattern1       = `\.gt\.txt$`
 	catReplacePattern = ".txt"
-	catFileName       = false
 )
 
 func init() {
@@ -29,7 +28,7 @@ func init() {
 		catPattern1, "set regex pattern for first input file")
 	catCmd.Flags().StringVarP(&catReplacePattern, "p2", "2",
 		catReplacePattern, "set replacement pattern for second input file")
-	catCmd.Flags().BoolVarP(&catFileName, "file-names", "f",
+	catCmd.Flags().BoolVarP(&gocrFileName, "file-names", "f",
 		false, "output first filename")
 }
 
@@ -78,7 +77,7 @@ func catReaders(fn string, in1, in2 io.Reader, out io.Writer) error {
 
 func print2lines(fn, t1, t2 string, out io.Writer) error {
 
-	if catFileName {
+	if gocrFileName {
 		if _, err := fmt.Println(fn); err != nil {
 			return err
 		}

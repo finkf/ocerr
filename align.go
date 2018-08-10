@@ -17,11 +17,11 @@ var (
 		RunE:  align,
 		Args:  cobra.ExactArgs(0),
 	}
-	alignReadFileName bool
+	gocrFileName bool
 )
 
 func init() {
-	alignCmd.Flags().BoolVarP(&alignReadFileName, "file-names", "f",
+	alignCmd.Flags().BoolVarP(&gocrFileName, "file-names", "f",
 		false, "read the filename as additional first line from input")
 }
 
@@ -43,7 +43,7 @@ func readAlignInput(r io.Reader, f readAlignInputFunc) error {
 	s := bufio.NewScanner(r)
 	for s.Scan() {
 		var fn string
-		if alignReadFileName {
+		if gocrFileName {
 			fn = s.Text()
 			if !s.Scan() {
 				break
