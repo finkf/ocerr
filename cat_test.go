@@ -44,8 +44,11 @@ func runSubCmd(t *testing.T, sin *os.File, f subCmdFunc, args ...string) string 
 }
 
 func checkGoldFile(t *testing.T, gold, got string) {
+	// update the gold file with the given output
 	if testUpdateGoldFile {
-		updateGoldFile(t, gold, got)
+		if err := ioutil.WriteFile(gold, []byte(got), os.ModePerm); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
 	}
 	t.Helper()
 	in, err := os.Open(gold)
@@ -59,13 +62,6 @@ func checkGoldFile(t *testing.T, gold, got string) {
 	}
 	if string(want) != got {
 		t.Fatalf("expected %q; got %q in %s", want, got, gold)
-	}
-}
-
-func updateGoldFile(t *testing.T, gold, content string) {
-	t.Helper()
-	if err := ioutil.WriteFile(gold, []byte(content), os.ModePerm); err != nil {
-		t.Fatalf("got error: %v", err)
 	}
 }
 
