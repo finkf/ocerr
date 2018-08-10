@@ -4,6 +4,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/spf13/cobra"
@@ -21,7 +22,7 @@ type subCmdFunc func(*cobra.Command, []string) error
 
 func withInput(t *testing.T, fn string, f subCmdFunc) subCmdFunc {
 	t.Helper()
-	in, err := os.Open(fn)
+	in, err := os.Open(filepath.Join("testdata", fn))
 	if err != nil {
 		t.Fatalf("got error: %v", err)
 	}
@@ -58,12 +59,13 @@ func runSubCmd(t *testing.T, f subCmdFunc, args []string) string {
 func checkGoldFile(t *testing.T, gold, got string) {
 	// update the gold file with the given output
 	if testUpdateGoldFile {
-		if err := ioutil.WriteFile(gold, []byte(got), os.ModePerm); err != nil {
+		outfile := filepath.Join("testdata", gold)
+		if err := ioutil.WriteFile(outfile, []byte(got), os.ModePerm); err != nil {
 			t.Fatalf("got error: %v", err)
 		}
 	}
 	t.Helper()
-	in, err := os.Open(gold)
+	in, err := os.Open(filepath.Join("testdata", gold))
 	if err != nil {
 		t.Fatalf("got error: %v", err)
 	}
@@ -83,8 +85,8 @@ func TestSubCmds(t *testing.T) {
 		f    subCmdFunc
 		args []string
 	}{
-		{"testdata/cat_gold.txt", cat, []string{"testdata/0001.gt.txt", "testdata/0002.gt.txt"}},
-		{"testdata/align_gold.txt", withInput(t, "testdata/cat_gold.txt", align), nil},
+		{"cat_gold.txt", cat, []string{"testdata/0001.gt.txt", "testdata/0002.gt.txt"}},
+		{"align_gold.txt", withInput(t, "cat_gold.txt", align), nil},
 	}
 	for _, tc := range tests {
 		t.Run(tc.gold, func(t *testing.T) {
