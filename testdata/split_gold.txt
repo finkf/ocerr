@@ -1,91 +1,114 @@
+testdata/0001.gt.txt
 Pium
 ||||
 Pium
 
+testdata/0001.gt.txt
 latine
 ||||||
 latine
 
+testdata/0001.gt.txt
 ˖
 |
 ˖
 
+testdata/0001.gt.txt
 Grece
 |||||
 Grece
 
+testdata/0001.gt.txt
 ſeluiũ
 ||||||
 ſeluiũ
 
+testdata/0001.gt.txt
 ˖
 |
 ˖
 
+testdata/0001.gt.txt
 ¶
 #
 (
 
+testdata/0001.gt.txt
 Der
 |||
 Der
 
+testdata/0001.gt.txt
 maiſt~er
 |||||+||
 maiſt er
 
+testdata/0001.gt.txt
 Platearius
 -|||||||||
 ~latearius
 
+testdata/0001.gt.txt
 ſpricht
 |||||||
 ſpricht
 
+testdata/0001.gt.txt
 das
 |||
 das
 
+testdata/0001.gt.txt
 epich
 |||||
 epich
 
+testdata/0001.gt.txt
 ſei
 |||
 ſei
 
+testdata/0001.gt.txt
 haiſz
 |||||
 haiſz
 
+testdata/0001.gt.txt
 vñ
 ||
 vñ
 
+testdata/0001.gt.txt
 truck
 |||||
 truck
 
+testdata/0002.gt.txt
 vnd
 |||
 vnd
 
+testdata/0002.gt.txt
 tru~cken
 ||#+||||
 trr cken
 
+testdata/0002.gt.txt
 in
 ||
 in
 
+testdata/0002.gt.txt
 dem
 |-|
 d~m
 
+testdata/0002.gt.txt
 zwaiten
 |||||||
 zwaiten
 
+testdata/0002.gt.txt
 grad
 |||-
 gra~

@@ -98,6 +98,7 @@ func TestSubCmds(t *testing.T) {
 		{"stat_gold.txt", withInput(t, stat, "align_gold.txt")},
 	}
 	for _, tc := range tests {
+		gocrFileName = true
 		t.Run(tc.gold, func(t *testing.T) {
 			got := runSubCmd(t, tc.f)
 			checkGoldFile(t, tc.gold, got)

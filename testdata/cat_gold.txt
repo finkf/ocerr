@@ -1,8 +1,12 @@
+testdata/0001.gt.txt
 Pium latine ˖ Grece ſeluiũ ˖
 Pium latine ˖ Grece ſeluiũ ˖
+testdata/0001.gt.txt
 ¶ Der maiſter Platearius
 ( Der maiſt er latearius
+testdata/0001.gt.txt
 ſpricht das epich ſei haiſz vñ truck
 ſpricht das epich ſei haiſz vñ truck
+testdata/0002.gt.txt
 vnd trucken in dem zwaiten grad
 vnd trr cken in dm zwaiten gra

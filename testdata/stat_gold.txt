@@ -1,15 +1,19 @@
+testdata/0001.gt.txt
 Pium latine ˖ Grece ſeluiũ ˖
 |||||||||||||||||||||||||||| Acc=c/(c+s+i+d)=28/(28+0+0+0)=1.000000
 Pium latine ˖ Grece ſeluiũ ˖
 
+testdata/0001.gt.txt
 ¶ Der maiſt~er Platearius
 #||||||||||+|||-||||||||| Acc=c/(c+s+i+d)=22/(22+1+1+1)=0.880000
 ( Der maiſt er ~latearius
 
+testdata/0001.gt.txt
 ſpricht das epich ſei haiſz vñ truck
 |||||||||||||||||||||||||||||||||||| Acc=c/(c+s+i+d)=36/(36+0+0+0)=1.000000
 ſpricht das epich ſei haiſz vñ truck
 
+testdata/0002.gt.txt
 vnd tru~cken in dem zwaiten grad
 ||||||#+|||||||||-|||||||||||||- Acc=c/(c+s+i+d)=28/(28+1+1+2)=0.875000
 vnd trr cken in d~m zwaiten gra~
