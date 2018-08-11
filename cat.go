@@ -42,6 +42,7 @@ func cat(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
+/* #nosec */
 func catFiles(f1, f2 string, out io.Writer) error {
 	in1, err := os.Open(f1)
 	if err != nil {
