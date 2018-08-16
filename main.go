@@ -19,6 +19,7 @@ func init() {
 	rootCmd.AddCommand(&splitCmd)
 	rootCmd.AddCommand(&statCmd)
 	rootCmd.AddCommand(&catCmd)
+	rootCmd.AddCommand(&matchCmd)
 }
 
 func main() {

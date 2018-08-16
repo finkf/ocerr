@@ -18,11 +18,20 @@ vnd tru~cken in dem zwaiten grad
 ||||||#+|||||||||-|||||||||||||- Acc=c/(c+s+i+d)=28/(28+1+1+2)=0.875000
 vnd trr cken in d~m zwaiten gra~
 
-Global: Acc=c/(c+s+i+d)=114/(114+2+2+3)=0.942149
-Errors: 7
+testdata/0003.gt.txt
+Line with a full-stop~. To match '.' use '\.'.
+|#-|||||||||||||#||||+|||||||||||||||||||||||| Acc=c/(c+s+i+d)=42/(42+2+1+1)=0.913043
+Lm~e with a full stop.. To match '.' use '\.'.
+
+Global: Acc=c/(c+s+i+d)=156/(156+4+3+4)=0.934132
+Errors: 11
 2:	{~}	{ }
+1:	{-}	{ }
 1:	{P}	{~}
 1:	{d}	{~}
 1:	{e}	{~}
+1:	{i}	{m}
+1:	{n}	{~}
 1:	{u}	{r}
+1:	{~}	{.}
 1:	{¶}	{(}

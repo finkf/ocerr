@@ -92,10 +92,13 @@ func TestSubCmds(t *testing.T) {
 		f    subCmdFunc
 	}{
 		{"cat_gold.txt",
-			withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt")},
+			withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt", "testdata/0003.gt.txt")},
 		{"align_gold.txt", withInput(t, align, "cat_gold.txt")},
 		{"split_gold.txt", withInput(t, split, "align_gold.txt")},
 		{"stat_gold.txt", withInput(t, stat, "align_gold.txt")},
+		{"match_gold_1.txt", withArgs(withInput(t, match, "align_gold.txt"), ".+.")},
+		{"match_gold_2.txt", withArgs(withInput(t, match, "align_gold.txt"), "..#+..")},
+		{"match_gold_3.txt", withArgs(withInput(t, match, "align_gold.txt"), `\...`)},
 	}
 	for _, tc := range tests {
 		gocrFileName = true

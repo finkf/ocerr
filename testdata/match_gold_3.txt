@@ -1,0 +1,5 @@
+testdata/0003.gt.txt
+Line with a full-stop~. To match '.' use '\.'.
+|#-|||||||||||||#||||+||||||||||||||||||||||||
+Lm~e with a full stop.. To match '.' use '\.'.
+

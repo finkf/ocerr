@@ -1,0 +1,1 @@
+Line with a full-stop. To match '.' use '\.'.

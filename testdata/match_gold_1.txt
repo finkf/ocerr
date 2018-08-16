@@ -1,17 +1,7 @@
 testdata/0001.gt.txt
-Pium latine ˖ Grece ſeluiũ ˖
-||||||||||||||||||||||||||||
-Pium latine ˖ Grece ſeluiũ ˖
-
-testdata/0001.gt.txt
 ¶ Der maiſt~er Platearius
 #||||||||||+|||-|||||||||
 ( Der maiſt er ~latearius
-
-testdata/0001.gt.txt
-ſpricht das epich ſei haiſz vñ truck
-||||||||||||||||||||||||||||||||||||
-ſpricht das epich ſei haiſz vñ truck
 
 testdata/0002.gt.txt
 vnd tru~cken in dem zwaiten grad

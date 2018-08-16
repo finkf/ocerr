@@ -10,3 +10,6 @@ testdata/0001.gt.txt
 testdata/0002.gt.txt
 vnd trucken in dem zwaiten grad
 vnd trr cken in dm zwaiten gra
+testdata/0003.gt.txt
+Line with a full-stop. To match '.' use '\.'.
+Lme with a full stop.. To match '.' use '\.'.
