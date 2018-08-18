@@ -22,7 +22,7 @@ func init() {
 type subCmdFunc func(*cobra.Command, []string) error
 
 func withInput(t *testing.T, f subCmdFunc, fn string) subCmdFunc {
-	t.Helper()
+	// t.Helper()
 	in, err := os.Open(filepath.Join("testdata", fn))
 	if err != nil {
 		t.Fatalf("got error: %v", err)
