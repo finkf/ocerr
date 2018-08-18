@@ -9,6 +9,7 @@ os:
   - linux
   - osx
 
+dist: trusty
 install: true
 
 script:
