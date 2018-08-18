@@ -23,3 +23,13 @@ Line with a full-stop~. To match '.' use '\.'.
 |#-|||||||||||||#||||+||||||||||||||||||||||||
 Lm~e with a full stop.. To match '.' use '\.'.
 
+testdata/0003.gt.txt
+Line with non-spacing marks x◌̭◌̇
+|||||||||||||||||||||||||||||-|
+Line with non-spacing marks x~◌̇
+
+testdata/0003.gt.txt
+This line~~  contains						multiple~~  whitespace
+|||||||||++||||||||||----||||||||||++||||||||||||
+This line    contains~~~~		multiple    whitespace
+

@@ -23,9 +23,21 @@ Line with a full-stop~. To match '.' use '\.'.
 |#-|||||||||||||#||||+|||||||||||||||||||||||| Acc=c/(c+s+i+d)=42/(42+2+1+1)=0.913043
 Lm~e with a full stop.. To match '.' use '\.'.
 
-Global: Acc=c/(c+s+i+d)=156/(156+4+3+4)=0.934132
-Errors: 11
+testdata/0003.gt.txt
+Line with non-spacing marks x◌̭◌̇
+|||||||||||||||||||||||||||||-| Acc=c/(c+s+i+d)=30/(30+0+0+1)=0.967742
+Line with non-spacing marks x~◌̇
+
+testdata/0003.gt.txt
+This line~~  contains						multiple~~  whitespace
+|||||||||++||||||||||----||||||||||++|||||||||||| Acc=c/(c+s+i+d)=41/(41+0+4+4)=0.836735
+This line    contains~~~~		multiple    whitespace
+
+Global: Acc=c/(c+s+i+d)=227/(227+4+7+9)=0.919028
+Errors: 15
 2:	{~}	{ }
+2:	{~~}	{  }
+1:	{				}	{~~~~}
 1:	{-}	{ }
 1:	{P}	{~}
 1:	{d}	{~}
@@ -35,3 +47,4 @@ Errors: 11
 1:	{u}	{r}
 1:	{~}	{.}
 1:	{¶}	{(}
+1:	{̭}	{~}
