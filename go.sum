@@ -1,0 +1,8 @@
+github.com/finkf/lev v0.0.0-20180810190057-fd18e62a9e41 h1:E8XThOg/Q/g/jfu4jrM0EsN2ARkhA6214r73/OxRSoY=
+github.com/finkf/lev v0.0.0-20180810190057-fd18e62a9e41/go.mod h1:BtEWwlMH2AT8fXvO1VoUmClZyUyrivS/37S2hgVwV8k=
+github.com/finkf/lev v0.0.1 h1:ImN1wzuxkItxk3vPi+qTz1wrU9WqV/A9XbYlvjnih4c=
+github.com/finkf/lev v0.0.1/go.mod h1:BtEWwlMH2AT8fXvO1VoUmClZyUyrivS/37S2hgVwV8k=
+github.com/spf13/cobra v0.0.3 h1:ZlrZ4XsMRm04Fr5pSFxBgfND2EBVa1nLpiy1stUsX/8=
+github.com/spf13/cobra v0.0.3/go.mod h1:1l0Ry5zgKvJasoi3XT1TypsSe7PqH0Sj9dhYf7v3XqQ=
+github.com/spf13/pflag v1.0.2 h1:Fy0orTDgHdbnzHcsOgfCN4LtHf0ec3wwtiwJqwvf3Gc=
+github.com/spf13/pflag v1.0.2/go.mod h1:DYY7MBk1bdzusC3SYhjObp+wFpr4gzcvqqNjLnInEg4=
