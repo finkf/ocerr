@@ -22,7 +22,7 @@ func init() {
 type subCmdFunc func(*cobra.Command, []string) error
 
 func withInput(t *testing.T, f subCmdFunc, fn string) subCmdFunc {
-	t.Helper()
+	// t.Helper()
 	in, err := os.Open(filepath.Join("testdata", fn))
 	if err != nil {
 		t.Fatalf("got error: %v", err)
@@ -41,7 +41,7 @@ func withArgs(f subCmdFunc, args ...string) subCmdFunc {
 }
 
 func runSubCmd(t *testing.T, f subCmdFunc) string {
-	t.Helper()
+	// t.Helper()
 	oldStdout := os.Stdout
 	r, w, err := os.Pipe()
 	if err != nil {
@@ -71,7 +71,7 @@ func checkGoldFile(t *testing.T, gold, got string) {
 			t.Fatalf("got error: %v", err)
 		}
 	}
-	t.Helper()
+	// t.Helper()
 	in, err := os.Open(filepath.Join("testdata", gold))
 	if err != nil {
 		t.Fatalf("got error: %v", err)

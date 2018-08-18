@@ -1,3 +1,4 @@
+![build status](https://travis-ci.org/finkf/gocr.svg?branch=master)
 # gocr
 Tools for ocr error examination written in [go](https://golang.org).
 
