@@ -36,7 +36,7 @@ func align(cmd *cobra.Command, args []string) error {
 	})
 }
 
-type readAlignInputFunc = func(string, string, string) error
+type readAlignInputFunc func(string, string, string) error
 
 func readAlignInput(r io.Reader, f readAlignInputFunc) error {
 	s := bufio.NewScanner(r)
