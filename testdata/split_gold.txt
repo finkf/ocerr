@@ -189,9 +189,29 @@ This
 This
 
 testdata/0003.gt.txt
-line~~
-||||++
-line  
+line
+||||
+line
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
 
 testdata/0003.gt.txt
 
@@ -200,38 +220,38 @@ testdata/0003.gt.txt
 
 testdata/0003.gt.txt
 contains
+|||||-||
+conta~ns
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+
+
+
+
+testdata/0003.gt.txt
+multiple
 ||||||||
-contains
+multiple
 
 testdata/0003.gt.txt
 
 
 
-
-testdata/0003.gt.txt
-
-
-
-
-testdata/0003.gt.txt
-
-
-
-
-testdata/0003.gt.txt
-
-
-
-
-testdata/0003.gt.txt
-
-
-
-
-testdata/0003.gt.txt
-multiple~~
-||||||||++
-multiple  
 
 testdata/0003.gt.txt
 

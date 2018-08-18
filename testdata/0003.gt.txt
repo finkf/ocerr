@@ -2,4 +2,4 @@ Line with a full-stop. To match '.' use '\.'.
 
 Line with non-spacing marks ẋ̭
 
-This line  contains						multiple  whitespace
+This line      contains     multiple   whitespace

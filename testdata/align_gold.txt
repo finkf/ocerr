@@ -29,7 +29,7 @@ Line with non-spacing marks x◌̭◌̇
 Line with non-spacing marks x~◌̇
 
 testdata/0003.gt.txt
-This line~~  contains						multiple~~  whitespace
-|||||||||++||||||||||----||||||||||++||||||||||||
-This line    contains~~~~		multiple    whitespace
+This line      contains     multiple   whitespace
+|||||||||-||||||||||-||--|||||||||||--|||||||||||
+This line~     conta~ns~~   multiple~~ whitespace
 

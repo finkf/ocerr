@@ -29,20 +29,21 @@ Line with non-spacing marks x◌̭◌̇
 Line with non-spacing marks x~◌̇
 
 testdata/0003.gt.txt
-This line~~  contains						multiple~~  whitespace
-|||||||||++||||||||||----||||||||||++|||||||||||| Acc=c/(c+s+i+d)=41/(41+0+4+4)=0.836735
-This line    contains~~~~		multiple    whitespace
+This line      contains     multiple   whitespace
+|||||||||-||||||||||-||--|||||||||||--||||||||||| Acc=c/(c+s+i+d)=43/(43+0+0+6)=0.877551
+This line~     conta~ns~~   multiple~~ whitespace
 
-Global: Acc=c/(c+s+i+d)=227/(227+4+7+9)=0.919028
-Errors: 15
+Global: Acc=c/(c+s+i+d)=229/(229+4+3+11)=0.927126
+Errors: 16
+2:	{  }	{~~}
 2:	{~}	{ }
-2:	{~~}	{  }
-1:	{				}	{~~~~}
+1:	{ }	{~}
 1:	{-}	{ }
 1:	{P}	{~}
 1:	{d}	{~}
 1:	{e}	{~}
 1:	{i}	{m}
+1:	{i}	{~}
 1:	{n}	{~}
 1:	{u}	{r}
 1:	{~}	{.}
