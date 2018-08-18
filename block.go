@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"strings"
+	"unicode"
 
 	"github.com/finkf/lev"
 )
@@ -51,7 +53,11 @@ func newBlock(buf []string) (block, error) {
 		b.fn = buf[0]
 		buf = buf[1:]
 	}
-	a, err := lev.NewAlignment(buf[0], buf[2], buf[1])
+	a, err := lev.NewAlignment(
+		deleteDottedCircles(buf[0]),
+		deleteDottedCircles(buf[2]),
+		buf[1],
+	)
 	b.a = a
 	return b, err
 }
@@ -67,6 +73,29 @@ func writeBlock(b block, w io.Writer) error {
 		trace += " " + b.stats
 	}
 	_, err := fmt.Fprintf(w, "%s\n%s\n%s\n%s\n",
-		string(b.a.S1), trace, string(b.a.S2), endOfBlock)
+		string(addDottedCircles(b.a.S1)),
+		trace,
+		string(addDottedCircles(b.a.S2)),
+		endOfBlock,
+	)
 	return err
+}
+
+const (
+	dottedCircle = '◌'
+)
+
+func addDottedCircles(rs []rune) []rune {
+	for i := 0; i < len(rs); i++ {
+		r := rs[i]
+		if unicode.Is(unicode.Mn, r) {
+			rs = append(rs[:i], append([]rune{dottedCircle}, rs[i:]...)...)
+			i = i + 1
+		}
+	}
+	return rs
+}
+
+func deleteDottedCircles(str string) string {
+	return strings.Replace(str, string(dottedCircle), "", -1)
 }
