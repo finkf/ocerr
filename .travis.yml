@@ -13,6 +13,7 @@ os:
 install: true
 
 script:
+  - env GO111MODULE=on go get
   - env GO111MODULE=on go build
   - env GO111MODULE=on go test
   - env GO111MODULE=on go vet
