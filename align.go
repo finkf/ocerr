@@ -21,7 +21,7 @@ var (
 )
 
 func init() {
-	alignCmd.Flags().BoolVarP(&gocrFileName, "file-names", "f",
+	alignCmd.Flags().BoolVarP(&gocrFileName, "header", "H",
 		false, "read the filename as additional first line from input")
 }
 

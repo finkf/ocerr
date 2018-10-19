@@ -28,7 +28,7 @@ func init() {
 		catPattern1, "set regex pattern for first input file")
 	catCmd.Flags().StringVarP(&catReplacePattern, "p2", "2",
 		catReplacePattern, "set replacement pattern for second input file")
-	catCmd.Flags().BoolVarP(&gocrFileName, "file-names", "f",
+	catCmd.Flags().BoolVarP(&gocrFileName, "header", "H",
 		false, "output first filename")
 }
 
