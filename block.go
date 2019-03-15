@@ -10,23 +10,23 @@ import (
 	"github.com/finkf/lev"
 )
 
-const (
-	minBlockLines = 3
-	maxBlockLines = 4
+const nBlockLines = 3
+
+var (
+	endOfBlock = "%%"
+	separator  = ""
 )
 
-var endOfBlock = "%%"
-
 type block struct {
-	a         lev.Alignment
-	fn, stats string
+	a             lev.Alignment
+	p1, p2, stats string
 }
 
 type readBlocksFunc func(block) error
 
 func readBlocks(r io.Reader, f readBlocksFunc) error {
 	s := bufio.NewScanner(r)
-	buf := make([]string, 0, maxBlockLines)
+	buf := make([]string, 0, nBlockLines)
 	for s.Scan() {
 		str := s.Text()
 		if str != endOfBlock {
@@ -46,13 +46,23 @@ func readBlocks(r io.Reader, f readBlocksFunc) error {
 }
 
 func newBlock(buf []string) (block, error) {
-	if len(buf) > maxBlockLines || len(buf) < minBlockLines {
+	if len(buf) != nBlockLines {
 		return block{}, fmt.Errorf("invalid block: %v", buf)
 	}
 	var b block
-	if len(buf) == maxBlockLines {
-		b.fn = buf[0]
-		buf = buf[1:]
+	// handle possible prefixes if a non empty separator is given
+	if separator != "" {
+		p1 := strings.Index(buf[0], separator)
+		p2 := strings.Index(buf[2], separator)
+		if p1 == -1 || p2 == -1 {
+			return block{}, fmt.Errorf("missing separator: %q", separator)
+		}
+		n := max(p1, p2) // prefixes are justified; so use position
+		b.p1 = buf[0][0 : p1+len(separator)]
+		b.p2 = buf[2][0 : p2+len(separator)]
+		buf[0] = buf[0][n+len(separator):]
+		buf[1] = buf[1][n+len(separator):]
+		buf[2] = buf[2][n+len(separator):]
 	}
 	a, err := lev.NewAlignment(
 		deleteDottedCircles(buf[0]),
@@ -63,19 +73,29 @@ func newBlock(buf []string) (block, error) {
 	return b, err
 }
 
-func writeBlock(b block, w io.Writer) error {
-	if len(b.fn) > 0 {
-		if _, err := fmt.Fprintln(w, b.fn); err != nil {
-			return err
-		}
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
+	return b
+}
+
+func maxlen(a, b string) int {
+	return max(len(a), len(b))
+}
+
+func writeBlock(b block, w io.Writer) error {
+	n := maxlen(b.p1, b.p2)
 	trace := string(b.a.Trace)
 	if b.stats != "" {
 		trace += " " + b.stats
 	}
-	_, err := fmt.Fprintf(w, "%s\n%s\n%s\n%s\n",
+	_, err := fmt.Fprintf(w, "%s%s\n%s%s\n%s%s\n%s\n",
+		prefix(b.p1, n),
 		string(addDottedCircles(b.a.S1)),
+		prefix("", n),
 		trace,
+		prefix(b.p2, n),
 		string(addDottedCircles(b.a.S2)),
 		endOfBlock,
 	)
@@ -99,4 +119,12 @@ func addDottedCircles(rs []rune) []rune {
 
 func deleteDottedCircles(str string) string {
 	return strings.Replace(str, string(dottedCircle), "", -1)
+}
+
+func prefix(str string, max int) string {
+	if max > 0 {
+		// left-justifiy and fill with spaces
+		return fmt.Sprintf("%-*s", max, str)
+	}
+	return ""
 }

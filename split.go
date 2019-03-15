@@ -62,7 +62,8 @@ func indexAny(rs []rune, set string) int {
 
 func splitBlock(b block, i, j int) block {
 	return block{
-		fn: b.fn,
+		p1: b.p1,
+		p2: b.p2,
 		a: lev.Alignment{
 			S1:    b.a.S1[i:j],
 			S2:    b.a.S2[i:j],
