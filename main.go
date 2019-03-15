@@ -21,6 +21,8 @@ func init() {
 	rootCmd.AddCommand(&matchCmd)
 	rootCmd.AddCommand(&pairCmd)
 	rootCmd.AddCommand(&countCmd)
+	rootCmd.PersistentFlags().StringVarP(
+		&endOfBlock, "eob", "b", endOfBlock, "Set the end of block marker")
 }
 
 func main() {

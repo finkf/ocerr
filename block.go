@@ -13,8 +13,9 @@ import (
 const (
 	minBlockLines = 3
 	maxBlockLines = 4
-	endOfBlock    = "%%"
 )
+
+var endOfBlock = "%%"
 
 type block struct {
 	a         lev.Alignment
