@@ -1,3 +1,0 @@
-Lme with a full stop.. To match '.' use '\.'.
-Line with non-spacing marks ẋ
-This line     contans   multiple whitespace

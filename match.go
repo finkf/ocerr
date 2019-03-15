@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/finkf/lev"
@@ -13,7 +14,7 @@ var (
 		Use:   "match pattern [patterns...]",
 		Long:  `Filters blocks that dont match given patterns`,
 		Short: `Filters blocks`,
-		RunE:  match,
+		RunE:  runMatch,
 		Args:  cobra.MinimumNArgs(1),
 	}
 	grepInverted bool
@@ -24,14 +25,18 @@ func init() {
 		false, "invert matching")
 }
 
-func match(cmd *cobra.Command, args []string) error {
+func runMatch(cmd *cobra.Command, args []string) error {
+	return match(os.Stdin, os.Stdout, args...)
+}
+
+func match(stdin io.Reader, stdout io.Writer, args ...string) error {
 	ms, err := newMatchers(args)
 	if err != nil {
 		return err
 	}
-	return readBlocks(os.Stdin, func(b block) error {
+	return readBlocks(stdin, func(b block) error {
 		if ms.match(b.a) != grepInverted {
-			return writeBlock(b, os.Stdout)
+			return writeBlock(b, stdout)
 		}
 		return nil
 	})

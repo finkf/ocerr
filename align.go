@@ -14,7 +14,7 @@ var (
 		Use:   "align",
 		Long:  `Align pairs of input lines and convert them into alignment blocks`,
 		Short: `Align pairs of input lines`,
-		RunE:  align,
+		RunE:  runAlign,
 		Args:  cobra.ExactArgs(0),
 	}
 	gocrFileName bool
@@ -25,14 +25,18 @@ func init() {
 		false, "read the filename as additional first line from input")
 }
 
-func align(cmd *cobra.Command, args []string) error {
+func runAlign(cmd *cobra.Command, args []string) error {
+	return align(os.Stdin, os.Stdout)
+}
+
+func align(stdin io.Reader, stdout io.Writer) error {
 	var l lev.Lev
-	return readAlignInput(os.Stdin, func(fn, s1, s2 string) error {
+	return readAlignInput(stdin, func(fn, s1, s2 string) error {
 		a, err := l.Alignment(l.Trace(s1, s2))
 		if err != nil {
 			return err
 		}
-		return writeBlock(block{fn: fn, a: a}, os.Stdout)
+		return writeBlock(block{fn: fn, a: a}, stdout)
 	})
 }
 

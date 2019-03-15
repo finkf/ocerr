@@ -13,7 +13,7 @@ import (
 const (
 	minBlockLines = 3
 	maxBlockLines = 4
-	endOfBlock    = ""
+	endOfBlock    = "%%"
 )
 
 type block struct {

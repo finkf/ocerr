@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"sort"
 
@@ -14,7 +15,7 @@ var (
 		Use:   "stat",
 		Long:  `Calculate error statistics of alignment blocks`,
 		Short: `Calculate error statistics`,
-		RunE:  stat,
+		RunE:  runStat,
 		Args:  cobra.ExactArgs(0),
 	}
 	statGlobal        = make(map[byte]uint)
@@ -32,20 +33,24 @@ func init() {
 		0, "set maximal number of printed error patterns (0=all, -1=none)")
 }
 
-func stat(cmd *cobra.Command, args []string) error {
-	err := readBlocks(os.Stdin, func(b block) error {
-		return statBlock(b)
+func runStat(cmd *cobra.Command, args []string) error {
+	return stat(os.Stdin, os.Stdout)
+}
+
+func stat(stdin io.Reader, stdout io.Writer) error {
+	err := readBlocks(stdin, func(b block) error {
+		return statBlock(b, stdout)
 	})
 	if err != nil {
 		return err
 	}
-	if _, err := fmt.Printf("Global: %s\n", countsToString(statGlobal)); err != nil {
+	if _, err := fmt.Fprintf(stdout, "Global: %s\n", countsToString(statGlobal)); err != nil {
 		return err
 	}
-	return printErrorPatterns()
+	return printErrorPatterns(stdout)
 }
 
-func statBlock(b block) error {
+func statBlock(b block, stdout io.Writer) error {
 	// clear local stats
 	for _, b := range []byte{lev.Del, lev.Sub, lev.Ins, lev.Nop} {
 		statLocal[b] = 0
@@ -57,7 +62,7 @@ func statBlock(b block) error {
 	}
 	addErrorPatterns(b)
 	b.stats = countsToString((statLocal))
-	return writeBlock(b, os.Stdout)
+	return writeBlock(b, stdout)
 }
 
 func addErrorPatterns(b block) {
@@ -82,7 +87,7 @@ func addErrorPatterns(b block) {
 	}
 }
 
-func printErrorPatterns() error {
+func printErrorPatterns(stdout io.Writer) error {
 	if statMax < 0 {
 		return nil
 	}
@@ -109,14 +114,14 @@ func printErrorPatterns() error {
 		}
 		return ep[i].c > ep[j].c
 	})
-	if _, err := fmt.Printf("Errors: %d\n", total); err != nil {
+	if _, err := fmt.Fprintf(stdout, "Errors: %d\n", total); err != nil {
 		return err
 	}
 	for i := range ep {
 		if statMax > 0 && i >= statMax {
 			break
 		}
-		if _, err := fmt.Printf("%d:\t{%s}\t{%s}\n",
+		if _, err := fmt.Fprintf(stdout, "%d:\t{%s}\t{%s}\n",
 			ep[i].c, ep[i].p.first, ep[i].p.second); err != nil {
 			return err
 		}

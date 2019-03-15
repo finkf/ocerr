@@ -1,13 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"flag"
+	"fmt"
+	"io"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 	"testing"
-
-	"github.com/spf13/cobra"
 )
 
 var (
@@ -15,96 +14,109 @@ var (
 )
 
 func init() {
-	flag.BoolVar(&updateGoldFiles, "update",
-		false, "update gold files")
+	flag.BoolVar(&updateGoldFiles, "update", false, "update gold files")
 }
 
-type subCmdFunc func(*cobra.Command, []string) error
+func withCatFiles(a, b string, f func(io.Reader)) {
+	abs, err := ioutil.ReadFile(a)
+	ensureReadTestFile(a, err)
+	bbs, err := ioutil.ReadFile(b)
+	ensureReadTestFile(b, err)
+	var buf bytes.Buffer
+	if _, err := buf.Write(abs); err != nil {
+		panic(err)
+	}
+	if _, err := buf.Write(bbs); err != nil {
+		panic(err)
+	}
+	f(&buf)
+}
 
-func withInput(t *testing.T, f subCmdFunc, fn string) subCmdFunc {
+func withFile(a string, f func(io.Reader)) {
+	abs, err := ioutil.ReadFile(a)
+	ensureReadTestFile(a, err)
+	buf := bytes.NewBuffer(abs)
+	f(buf)
+}
+
+func ensureReadTestFile(path string, err error) {
+	if err != nil {
+		panic(fmt.Sprintf("cannot read testfile: %s: %v", path, err))
+	}
+}
+
+func gold(t *testing.T, in io.Reader, gold string) {
 	t.Helper()
-	in, err := os.Open(filepath.Join("testdata", fn))
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	return func(cmd *cobra.Command, args []string) error {
-		os.Stdin = in
-		defer in.Close()
-		return f(cmd, args)
-	}
-}
-
-func withArgs(f subCmdFunc, args ...string) subCmdFunc {
-	return func(cmd *cobra.Command, xx []string) error {
-		return f(cmd, args)
-	}
-}
-
-func runSubCmd(t *testing.T, f subCmdFunc) string {
-	t.Helper()
-	oldStdout := os.Stdout
-	r, w, err := os.Pipe()
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	defer func() { _ = r.Close() }()
-	os.Stdout = w
-	if err = f(nil, nil); err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	if err = w.Close(); err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	bs, err := ioutil.ReadAll(r)
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	os.Stdout = oldStdout
-	return string(bs)
-}
-
-func checkGoldFile(t *testing.T, gold, got string) {
-	// update the gold file with the given output
+	got, err := ioutil.ReadAll(in)
+	ensureReadTestFile("input", err)
 	if updateGoldFiles {
-		outfile := filepath.Join("testdata", gold)
-		if err := ioutil.WriteFile(outfile, []byte(got), os.ModePerm); err != nil {
-			t.Fatalf("got error: %v", err)
+		if err = ioutil.WriteFile(gold, got, 0666); err != nil {
+			panic(fmt.Sprintf("cannot write %s: %v", gold, err))
 		}
 	}
-	t.Helper()
-	in, err := os.Open(filepath.Join("testdata", gold))
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	defer func() { _ = in.Close() }()
-	want, err := ioutil.ReadAll(in)
-	if err != nil {
-		t.Fatalf("got error: %v", err)
-	}
-	if string(want) != got {
-		t.Fatalf("expected %q; got %q in %s", want, got, gold)
+	want, err := ioutil.ReadFile(gold)
+	ensureReadTestFile(gold, err)
+	if !bytes.Equal(want, got) {
+		t.Fatalf("input not equal to %s", gold)
 	}
 }
 
-func TestSubCmds(t *testing.T) {
-	tests := []struct {
-		gold string
-		f    subCmdFunc
-	}{
-		{"cat_gold.txt",
-			withArgs(cat, "testdata/0001.gt.txt", "testdata/0002.gt.txt", "testdata/0003.gt.txt")},
-		{"align_gold.txt", withInput(t, align, "cat_gold.txt")},
-		{"split_gold.txt", withInput(t, split, "align_gold.txt")},
-		{"stat_gold.txt", withInput(t, stat, "align_gold.txt")},
-		{"match_gold_1.txt", withArgs(withInput(t, match, "align_gold.txt"), ".+.")},
-		{"match_gold_2.txt", withArgs(withInput(t, match, "align_gold.txt"), "..#+..")},
-		{"match_gold_3.txt", withArgs(withInput(t, match, "align_gold.txt"), `\...`)},
-	}
-	for _, tc := range tests {
-		gocrFileName = true
-		t.Run(tc.gold, func(t *testing.T) {
-			got := runSubCmd(t, tc.f)
-			checkGoldFile(t, tc.gold, got)
-		})
-	}
+func TestPair(t *testing.T) {
+	withCatFiles("testdata/a.txt", "testdata/b.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := pair(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/pair.gold.txt")
+	})
+}
+
+func TestAlign(t *testing.T) {
+	withFile("testdata/pair.gold.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := align(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/align.gold.txt")
+	})
+}
+
+func TestStat(t *testing.T) {
+	withFile("testdata/align.gold.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := stat(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/stat.gold.txt")
+	})
+}
+
+func TestSplit(t *testing.T) {
+	withFile("testdata/align.gold.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := split(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/split.gold.txt")
+	})
+}
+
+func TestMatch(t *testing.T) {
+	withFile("testdata/align.gold.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := match(in, &b, "ine|||ine", ".#("); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/match.gold.txt")
+	})
+}
+
+func TestCount(t *testing.T) {
+	withFile("testdata/split.gold.txt", func(in io.Reader) {
+		var b bytes.Buffer
+		if err := count(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/count.gold.txt")
+	})
 }

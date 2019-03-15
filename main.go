@@ -18,8 +18,9 @@ func init() {
 	rootCmd.AddCommand(&alignCmd)
 	rootCmd.AddCommand(&splitCmd)
 	rootCmd.AddCommand(&statCmd)
-	rootCmd.AddCommand(&catCmd)
 	rootCmd.AddCommand(&matchCmd)
+	rootCmd.AddCommand(&pairCmd)
+	rootCmd.AddCommand(&countCmd)
 }
 
 func main() {

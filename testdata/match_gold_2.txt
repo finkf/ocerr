@@ -1,5 +1,0 @@
-testdata/0002.gt.txt
-vnd tru~cken in dem zwaiten grad
-||||||#+|||||||||-|||||||||||||-
-vnd trr cken in d~m zwaiten gra~
-

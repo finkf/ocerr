@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"os"
 
 	"github.com/finkf/lev"
@@ -12,7 +13,7 @@ var (
 		Use:   "split",
 		Long:  `Splits blocks of alignments at a set of characters`,
 		Short: `Split blocks into tokens`,
-		RunE:  split,
+		RunE:  runSplit,
 		Args:  cobra.ExactArgs(0),
 	}
 	splitCharSet string
@@ -27,21 +28,25 @@ func init() {
 		defaultSplitCharSet, "set the character set used to split blocks")
 }
 
-func split(cmd *cobra.Command, args []string) error {
-	return readBlocks(os.Stdin, func(b block) error {
-		return splitBlocks(b)
+func runSplit(cmd *cobra.Command, args []string) error {
+	return split(os.Stdout, os.Stdin)
+}
+
+func split(stdin io.Reader, stdout io.Writer) error {
+	return readBlocks(stdin, func(b block) error {
+		return splitBlocks(b, stdout)
 	})
 }
 
-func splitBlocks(b block) error {
+func splitBlocks(b block, stdout io.Writer) error {
 	i := 0
 	for j := indexAny(b.a.S1[i:], splitCharSet); j > 0; {
-		if err := writeBlock(splitBlock(b, i, j), os.Stdout); err != nil {
+		if err := writeBlock(splitBlock(b, i, j), stdout); err != nil {
 			return err
 		}
 		i, j = nextSplitBlock(b, splitCharSet, j)
 	}
-	return writeBlock(splitBlock(b, i, len(b.a.S1)), os.Stdout)
+	return writeBlock(splitBlock(b, i, len(b.a.S1)), stdout)
 }
 
 func indexAny(rs []rune, set string) int {
