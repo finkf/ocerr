@@ -1,4 +1,4 @@
-![build status](https://travis-ci.org/finkf/ocerr.svg?branch=master)
+![build status](https://travis-ci.org/finkf/gocr.svg?branch=master)
 # ocerr
 Tools for ocr error examination written in [go](https://golang.org).
 
