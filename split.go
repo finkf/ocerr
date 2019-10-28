@@ -29,7 +29,7 @@ func init() {
 }
 
 func runSplit(cmd *cobra.Command, args []string) error {
-	return split(os.Stdout, os.Stdin)
+	return split(os.Stdin, os.Stdout)
 }
 
 func split(stdin io.Reader, stdout io.Writer) error {
