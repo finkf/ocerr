@@ -8,7 +8,7 @@ import (
 
 var (
 	rootCmd = cobra.Command{
-		Use:   "gocr",
+		Use:   "ocerr",
 		Long:  `tools for ocr error examination`,
 		Short: `tools for ocr error examination`,
 	}
