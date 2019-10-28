@@ -17,9 +17,6 @@ var (
 	}
 )
 
-func init() {
-}
-
 func runCount(cmd *cobra.Command, args []string) error {
 	return count(os.Stdin, os.Stdout)
 }
