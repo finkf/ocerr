@@ -12,6 +12,10 @@ var (
 		Long:  `tools for ocr error examination`,
 		Short: `tools for ocr error examination`,
 	}
+	global struct {
+		endOfBlock string
+		separator  string
+	}
 )
 
 func init() {
@@ -22,9 +26,10 @@ func init() {
 	rootCmd.AddCommand(&pairCmd)
 	rootCmd.AddCommand(&countCmd)
 	rootCmd.PersistentFlags().StringVarP(
-		&endOfBlock, "eob", "b", "%%", "Set the end of block marker")
+		&global.endOfBlock, "eob", "b", "%%", "Set the end of block marker")
 	rootCmd.PersistentFlags().StringVarP(
-		&separator, "separator", "F", "", "Set the separator for prefixes")
+		&global.separator, "separator", "F", "",
+		"Set the separator for prefixes (empty string means no prefix)")
 }
 
 func main() {

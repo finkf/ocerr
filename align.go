@@ -49,16 +49,16 @@ func readAlignInput(r io.Reader, f func(p1, p2, s1, s2 string) error) error {
 		}
 		s2 := s.Text()
 		var p1, p2 string
-		if separator != "" {
-			n1 := strings.Index(s1, separator)
-			n2 := strings.Index(s2, separator)
+		if global.separator != "" {
+			n1 := strings.Index(s1, global.separator)
+			n2 := strings.Index(s2, global.separator)
 			if n1 == -1 || n2 == -1 {
-				return fmt.Errorf("missing separtor: %q", separator)
+				return fmt.Errorf("missing separtor: %q", global.separator)
 			}
-			p1 = s1[0 : n1+len(separator)]
-			p2 = s2[0 : n2+len(separator)]
-			s1 = s1[n1+len(separator):]
-			s2 = s2[n2+len(separator):]
+			p1 = s1[0 : n1+len(global.separator)]
+			p2 = s2[0 : n2+len(global.separator)]
+			s1 = s1[n1+len(global.separator):]
+			s2 = s2[n2+len(global.separator):]
 		}
 		if err := f(p1, p2, s1, s2); err != nil {
 			return err

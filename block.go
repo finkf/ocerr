@@ -12,11 +12,6 @@ import (
 
 const nBlockLines = 3
 
-var (
-	endOfBlock = "%%"
-	separator  = ""
-)
-
 type block struct {
 	a             lev.Alignment
 	p1, p2, stats string
@@ -29,7 +24,7 @@ func readBlocks(r io.Reader, f readBlocksFunc) error {
 	buf := make([]string, 0, nBlockLines)
 	for s.Scan() {
 		str := s.Text()
-		if str != endOfBlock {
+		if str != global.endOfBlock {
 			buf = append(buf, str)
 			continue
 		}
@@ -51,18 +46,18 @@ func newBlock(buf []string) (block, error) {
 	}
 	var b block
 	// handle possible prefixes if a non empty separator is given
-	if separator != "" {
-		p1 := strings.Index(buf[0], separator)
-		p2 := strings.Index(buf[2], separator)
+	if global.separator != "" {
+		p1 := strings.Index(buf[0], global.separator)
+		p2 := strings.Index(buf[2], global.separator)
 		if p1 == -1 || p2 == -1 {
-			return block{}, fmt.Errorf("missing separator: %q", separator)
+			return block{}, fmt.Errorf("missing separator: %q", global.separator)
 		}
 		n := max(p1, p2) // prefixes are justified; so use position
-		b.p1 = buf[0][0 : p1+len(separator)]
-		b.p2 = buf[2][0 : p2+len(separator)]
-		buf[0] = buf[0][n+len(separator):]
-		buf[1] = buf[1][n+len(separator):]
-		buf[2] = buf[2][n+len(separator):]
+		b.p1 = buf[0][0 : p1+len(global.separator)]
+		b.p2 = buf[2][0 : p2+len(global.separator)]
+		buf[0] = buf[0][n+len(global.separator):]
+		buf[1] = buf[1][n+len(global.separator):]
+		buf[2] = buf[2][n+len(global.separator):]
 	}
 	a, err := lev.NewAlignment(
 		deleteDottedCircles(buf[0]),
@@ -97,7 +92,7 @@ func writeBlock(b block, w io.Writer) error {
 		trace,
 		prefix(b.p2, n),
 		string(addDottedCircles(b.a.S2)),
-		endOfBlock,
+		global.endOfBlock,
 	)
 	return err
 }
