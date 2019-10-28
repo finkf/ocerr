@@ -22,6 +22,7 @@ var (
 	statLocal         = make(map[byte]uint)
 	statErrorPatterns = make(map[spair]uint)
 	statMax           = 0
+	statCut           = 0
 )
 
 type spair struct {
@@ -31,6 +32,8 @@ type spair struct {
 func init() {
 	statCmd.Flags().IntVarP(&statMax, "max", "m",
 		0, "set maximal number of printed error patterns (0=all, -1=none)")
+	statCmd.Flags().IntVarP(&statCut, "cut", "c",
+		0, "do not print error patterns with a count smaller than cut")
 }
 
 func runStat(cmd *cobra.Command, args []string) error {
@@ -117,10 +120,15 @@ func printErrorPatterns(stdout io.Writer) error {
 	if _, err := fmt.Fprintf(stdout, "Errors: %d\n", total); err != nil {
 		return err
 	}
+	var n int
 	for i := range ep {
-		if statMax > 0 && i >= statMax {
+		if statMax > 0 && n >= statMax {
 			break
 		}
+		if ep[i].c <= uint(statCut) {
+			continue
+		}
+		n++
 		if _, err := fmt.Fprintf(stdout, "%d:\t{%s}\t{%s}\n",
 			ep[i].c, ep[i].p.first, ep[i].p.second); err != nil {
 			return err
