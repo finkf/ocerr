@@ -22,9 +22,9 @@ func init() {
 	rootCmd.AddCommand(&pairCmd)
 	rootCmd.AddCommand(&countCmd)
 	rootCmd.PersistentFlags().StringVarP(
-		&endOfBlock, "eob", "b", endOfBlock, "Set the end of block marker")
+		&endOfBlock, "eob", "b", "%%", "Set the end of block marker")
 	rootCmd.PersistentFlags().StringVarP(
-		&separator, "separator", "F", separator, "Set the separator for prefixes")
+		&separator, "separator", "F", "", "Set the separator for prefixes")
 }
 
 func main() {
