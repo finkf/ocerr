@@ -1,15 +1,15 @@
-![build status](https://travis-ci.org/finkf/gocr.svg?branch=master)
-# gocr
+![build status](https://travis-ci.org/finkf/ocerr.svg?branch=master)
+# ocerr
 Tools for ocr error examination written in [go](https://golang.org).
 
 ## Usage
 
 ```bash
-gocr cat *.gt.txt | gocr align
+ocerr cat *.gt.txt | ocerr align
 ```
 
 ```bash
-gocr cat *.gt.txt | gocr align | gocr split
+ocerr cat *.gt.txt | ocerr align | ocerr split
 ```
 
 For the output format check out the [align](testdata/align.gold.txt)

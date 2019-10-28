@@ -1,4 +1,4 @@
-module github.com/finkf/gocr
+module github.com/finkf/ocerr
 
 require (
 	github.com/finkf/lev v0.1.1
