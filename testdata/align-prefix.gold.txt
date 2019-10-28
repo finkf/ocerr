@@ -1,0 +1,12 @@
+a: Pium latine ˖ Grece ſeluiũ ˖
+   ||||||||||||||||||||||||||||
+a: Pium latine ˖ Grece ſeluiũ ˖
+%%
+b: ¶ Der maiſt~er Platearius
+   #||||||||||+|||-|||||||||
+b: ( Der maiſt er ~latearius
+%%
+c: ſpricht das epich ſei haiſz vñ truck
+   ||||||||||||||||||||||||||||##||||||
+c: ſpricht das epich ſei haiſz un truck
+%%

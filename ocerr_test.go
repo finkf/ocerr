@@ -81,6 +81,20 @@ func TestAlign(t *testing.T) {
 	})
 }
 
+func TestAlignPrefix(t *testing.T) {
+	withFile("testdata/pair-prefix.txt", func(in io.Reader) {
+		global.separator = " "
+		defer func() { // reset
+			global.separator = ""
+		}()
+		var b bytes.Buffer
+		if err := align(in, &b); err != nil {
+			t.Fatalf("got error: %v", err)
+		}
+		gold(t, &b, "testdata/align-prefix.gold.txt")
+	})
+}
+
 func TestStat(t *testing.T) {
 	withFile("testdata/align.gold.txt", func(in io.Reader) {
 		var b bytes.Buffer
