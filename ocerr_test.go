@@ -19,9 +19,9 @@ func init() {
 
 func withCatFiles(a, b string, f func(io.Reader)) {
 	abs, err := ioutil.ReadFile(a)
-	ensureReadTestFile(a, err)
+	noErr(a, err)
 	bbs, err := ioutil.ReadFile(b)
-	ensureReadTestFile(b, err)
+	noErr(b, err)
 	var buf bytes.Buffer
 	if _, err := buf.Write(abs); err != nil {
 		panic(err)
@@ -34,12 +34,12 @@ func withCatFiles(a, b string, f func(io.Reader)) {
 
 func withFile(a string, f func(io.Reader)) {
 	abs, err := ioutil.ReadFile(a)
-	ensureReadTestFile(a, err)
+	noErr(a, err)
 	buf := bytes.NewBuffer(abs)
 	f(buf)
 }
 
-func ensureReadTestFile(path string, err error) {
+func noErr(path string, err error) {
 	if err != nil {
 		panic(fmt.Sprintf("cannot read testfile: %s: %v", path, err))
 	}
@@ -48,14 +48,14 @@ func ensureReadTestFile(path string, err error) {
 func gold(t *testing.T, in io.Reader, gold string) {
 	t.Helper()
 	got, err := ioutil.ReadAll(in)
-	ensureReadTestFile("input", err)
+	noErr("input", err)
 	if updateGoldFiles {
 		if err = ioutil.WriteFile(gold, got, 0666); err != nil {
 			panic(fmt.Sprintf("cannot write %s: %v", gold, err))
 		}
 	}
 	want, err := ioutil.ReadFile(gold)
-	ensureReadTestFile(gold, err)
+	noErr(gold, err)
 	if !bytes.Equal(want, got) {
 		t.Fatalf("input not equal to %s\n[%s]\n[%s]",
 			gold, string(want), string(got))
