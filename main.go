@@ -19,6 +19,14 @@ var (
 )
 
 func init() {
+	defEOB := "%%"
+	if val, set := os.LookupEnv("OCERREOB"); set {
+		defEOB = val
+	}
+	defSep := ""
+	if val, set := os.LookupEnv("OCERRSEP"); set {
+		defSep = val
+	}
 	rootCmd.AddCommand(&alignCmd)
 	rootCmd.AddCommand(&splitCmd)
 	rootCmd.AddCommand(&statCmd)
@@ -26,10 +34,11 @@ func init() {
 	rootCmd.AddCommand(&pairCmd)
 	rootCmd.AddCommand(&countCmd)
 	rootCmd.PersistentFlags().StringVarP(
-		&global.endOfBlock, "eob", "b", "%%", "Set the end of block marker")
+		&global.endOfBlock, "eob", "b", defEOB,
+		"Set the end of block marker")
 	rootCmd.PersistentFlags().StringVarP(
-		&global.separator, "separator", "F", "",
-		"Set the separator for prefixes (empty string means no prefix)")
+		&global.separator, "separator", "F", defSep,
+		"Set the separator for prefixes")
 }
 
 func main() {
