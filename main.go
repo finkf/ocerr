@@ -9,8 +9,23 @@ import (
 var (
 	rootCmd = cobra.Command{
 		Use:   "ocerr",
-		Long:  `tools for ocr error examination`,
-		Short: `tools for ocr error examination`,
+		Short: `Tool for ocr error examination`,
+		Long: `Tool for ocr error examination
+
+This tool can be used to examine pairs of ground-truth test lines.
+The base are always pairs of input lines (first line is the
+ground-truth, second line the test).  These lines can be aligned (see
+the align command) for further processing.
+
+Most of the command operate on blocks.  A block is a sequence of 3
+lines separated by a end of block marker (EOB).  Each line of a block
+can have a prefix seperated by a separator.  If the separator is the
+empty string, no prefix is assumed.
+
+You can either use the --eob|-b, --separator|-F command line optoins
+to change them or set the environment variales OCERREOB or OCERRSEP
+accordingly.
+`,
 	}
 	global struct {
 		endOfBlock string
