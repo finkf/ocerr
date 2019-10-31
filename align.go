@@ -31,7 +31,7 @@ func runAlign(cmd *cobra.Command, args []string) error {
 
 func align(stdin io.Reader, stdout io.Writer) error {
 	var l lev.Lev
-	return readAlignInput(stdin, func(p1, p2, s1, s2 string) error {
+	return readPairs(stdin, func(p1, p2, s1, s2 string) error {
 		a, err := l.Alignment(l.Trace(s1, s2))
 		if err != nil {
 			return err
@@ -40,7 +40,7 @@ func align(stdin io.Reader, stdout io.Writer) error {
 	})
 }
 
-func readAlignInput(r io.Reader, f func(p1, p2, s1, s2 string) error) error {
+func readPairs(r io.Reader, f func(p1, p2, s1, s2 string) error) error {
 	s := bufio.NewScanner(r)
 	for s.Scan() {
 		s1 := s.Text()
