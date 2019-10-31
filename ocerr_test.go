@@ -57,7 +57,8 @@ func gold(t *testing.T, in io.Reader, gold string) {
 	want, err := ioutil.ReadFile(gold)
 	ensureReadTestFile(gold, err)
 	if !bytes.Equal(want, got) {
-		t.Fatalf("input not equal to %s", gold)
+		t.Fatalf("input not equal to %s\n[%s]\n[%s]",
+			gold, string(want), string(got))
 	}
 }
 

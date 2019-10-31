@@ -23,15 +23,15 @@ func runCount(cmd *cobra.Command, args []string) error {
 
 func count(stdin io.Reader, stdout io.Writer) error {
 	var total, errors int
-	err := readBlocks(stdin, func(b block) error {
+	s := newBlockScanner(stdin)
+	for s.scan() {
 		total++
-		if bytes.ContainsAny(b.a.Trace, "-#+") {
+		if bytes.ContainsAny(s.block().a.Trace, "-#+") {
 			errors++
 		}
-		return nil
-	})
-	if err != nil {
-		return err
+	}
+	if s.err() != nil {
+		return s.err()
 	}
 	acc := float64(total-errors) / float64(total)
 	ers := float64(errors) / float64(total)

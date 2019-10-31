@@ -36,7 +36,7 @@ func match(stdin io.Reader, stdout io.Writer, args ...string) error {
 	}
 	return readBlocks(stdin, func(b block) error {
 		if ms.match(b.a) != grepInverted {
-			return writeBlock(b, stdout)
+			return b.write(stdout)
 		}
 		return nil
 	})

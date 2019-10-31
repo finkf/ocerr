@@ -65,7 +65,7 @@ func statBlock(b block, stdout io.Writer) error {
 	}
 	addErrorPatterns(b)
 	b.stats = countsToString((statLocal))
-	return writeBlock(b, stdout)
+	return b.write(stdout)
 }
 
 func addErrorPatterns(b block) {

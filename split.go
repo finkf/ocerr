@@ -41,12 +41,12 @@ func split(stdin io.Reader, stdout io.Writer) error {
 func splitBlocks(b block, stdout io.Writer) error {
 	i := 0
 	for j := indexAny(b.a.S1[i:], splitCharSet); j > 0; {
-		if err := writeBlock(splitBlock(b, i, j), stdout); err != nil {
+		if err := splitBlock(b, i, j).write(stdout); err != nil {
 			return err
 		}
 		i, j = nextSplitBlock(b, splitCharSet, j)
 	}
-	return writeBlock(splitBlock(b, i, len(b.a.S1)), stdout)
+	return splitBlock(b, i, len(b.a.S1)).write(stdout)
 }
 
 func indexAny(rs []rune, set string) int {

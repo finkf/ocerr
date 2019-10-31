@@ -17,40 +17,13 @@ type block struct {
 	p1, p2, stats string
 }
 
-type readBlocksFunc func(block) error
-
-func readBlocks(r io.Reader, f readBlocksFunc) error {
-	s := bufio.NewScanner(r)
-	buf := make([]string, 0, nBlockLines)
-	for s.Scan() {
-		str := s.Text()
-		if str != global.endOfBlock {
-			buf = append(buf, str)
-			continue
-		}
-		b, err := newBlock(buf)
-		if err != nil {
-			return err
-		}
-		if err := f(b); err != nil {
-			return err
-		}
-		buf = buf[:0]
-	}
-	return s.Err()
-}
-
-func newBlock(buf []string) (block, error) {
-	if len(buf) != nBlockLines {
-		return block{}, fmt.Errorf("invalid block: %v", buf)
-	}
-	var b block
+func (b *block) init(buf [nBlockLines]string, sep string) error {
 	// handle possible prefixes if a non empty separator is given
-	if global.separator != "" {
-		p1 := strings.Index(buf[0], global.separator)
-		p2 := strings.Index(buf[2], global.separator)
+	if sep != "" {
+		p1 := strings.Index(buf[0], sep)
+		p2 := strings.Index(buf[2], sep)
 		if p1 == -1 || p2 == -1 {
-			return block{}, fmt.Errorf("missing separator: %q", global.separator)
+			return fmt.Errorf("missing separator: %q", sep)
 		}
 		n := max(p1, p2) // prefixes are justified; so use position
 		b.p1 = buf[0][0 : p1+len(global.separator)]
@@ -65,21 +38,10 @@ func newBlock(buf []string) (block, error) {
 		buf[1],
 	)
 	b.a = a
-	return b, err
+	return err
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func maxlen(a, b string) int {
-	return max(len(a), len(b))
-}
-
-func writeBlock(b block, w io.Writer) error {
+func (b block) write(w io.Writer) error {
 	n := maxlen(b.p1, b.p2)
 	trace := string(b.a.Trace)
 	if b.stats != "" {
@@ -95,6 +57,71 @@ func writeBlock(b block, w io.Writer) error {
 		global.endOfBlock,
 	)
 	return err
+}
+
+type blockScanner struct {
+	scanner *bufio.Scanner
+	_block  block
+	_err    error
+}
+
+func newBlockScanner(in io.Reader) *blockScanner {
+	return &blockScanner{scanner: bufio.NewScanner(in)}
+}
+
+func (s *blockScanner) scan() bool {
+	var buf [nBlockLines]string
+	var i int
+	for s.scanner.Scan() {
+		str := s.scanner.Text()
+		if str != global.endOfBlock && i < nBlockLines {
+			buf[i] = str
+			i++
+			continue
+		}
+		if i != nBlockLines {
+			s._err = fmt.Errorf("invalid block")
+			return false
+		}
+		s._err = s._block.init(buf, global.separator)
+		if s._err != nil {
+			return false
+		}
+		return true
+	}
+	if s._err == nil {
+		s._err = s.scanner.Err()
+	}
+	return false
+}
+
+func (s *blockScanner) block() block {
+	return s._block
+}
+
+func (s *blockScanner) err() error {
+	return s._err
+}
+
+func readBlocks(r io.Reader, f func(block) error) error {
+	s := newBlockScanner(r)
+	for s.scan() {
+		if err := f(s.block()); err != nil {
+			return err
+		}
+	}
+	return s.err()
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func maxlen(a, b string) int {
+	return max(len(a), len(b))
 }
 
 const (

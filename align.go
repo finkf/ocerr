@@ -36,7 +36,7 @@ func align(stdin io.Reader, stdout io.Writer) error {
 		if err != nil {
 			return err
 		}
-		return writeBlock(block{p1: p1, p2: p2, a: a}, stdout)
+		return block{p1: p1, p2: p2, a: a}.write(stdout)
 	})
 }
 
