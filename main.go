@@ -22,7 +22,7 @@ lines separated by a end of block marker (EOB).  Each line of a block
 can have a prefix seperated by a separator.  If the separator is the
 empty string, no prefix is assumed.
 
-You can either use the --eob|-b, --separator|-F command line optoins
+You can either use the --eob|-b, --separator|-F command line options
 to change them or set the environment variales OCERREOB or OCERRSEP
 accordingly.
 `,

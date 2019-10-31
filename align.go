@@ -14,8 +14,8 @@ import (
 var (
 	alignCmd = cobra.Command{
 		Use:   "align",
-		Long:  `Align pairs of input lines and convert them into alignment blocks`,
 		Short: `Align pairs of input lines`,
+		Long:  `Align pairs of input lines and convert them into alignment blocks.`,
 		RunE:  runAlign,
 		Args:  cobra.ExactArgs(0),
 	}
