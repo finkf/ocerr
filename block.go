@@ -129,9 +129,8 @@ const (
 )
 
 func addDottedCircles(rs []rune) []rune {
-	for i := 0; i < len(rs); i++ {
-		r := rs[i]
-		if unicode.Is(unicode.Mn, r) {
+	for i := range rs {
+		if unicode.Is(unicode.Mn, rs[i]) {
 			rs = append(rs[:i], append([]rune{dottedCircle}, rs[i:]...)...)
 			i = i + 1
 		}
