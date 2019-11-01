@@ -35,7 +35,8 @@ func count(stdin io.Reader, stdout io.Writer) error {
 	}
 	acc := float64(total-errors) / float64(total)
 	ers := float64(errors) / float64(total)
-	if _, err := fmt.Fprintf(stdout, "total: %d, errors: %d, accuracy: %f, errors: %f\n",
+	if _, err := fmt.Fprintf(stdout,
+		"total: %d, errors: %d, accuracy: %f, errors: %f\n",
 		total, errors, acc, ers); err != nil {
 		return err
 	}
