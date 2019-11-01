@@ -18,12 +18,12 @@ ground-truth, second line the test).  These lines can be aligned (see
 the align command) for further processing.
 
 Most of the command operate on blocks.  A block is a sequence of 3
-lines separated by a end of block marker (EOB).  Each line of a block
-can have a prefix seperated by a separator.  If the separator is the
-empty string, no prefix is assumed.
+lines separated by a end of block marker (EOB) on a single line.  Each
+line of a block can have a prefix seperated by a separator.  If the
+separator is the empty string, no prefix is assumed.
 
-You can either use the --eob|-b, --separator|-F command line options
-to change them or set the environment variales OCERREOB or OCERRSEP
+You can either use the --eob|-b, --sep|-F command line options to
+change them or set the environment variales OCERREOB or OCERRSEP
 accordingly.
 `,
 	}
