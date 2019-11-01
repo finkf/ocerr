@@ -10,6 +10,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type spair struct {
+	first, second string
+}
+
+type counts map[byte]uint
+
 var (
 	statCmd = cobra.Command{
 		Use:   "stat",
@@ -18,16 +24,12 @@ var (
 		RunE:  runStat,
 		Args:  cobra.ExactArgs(0),
 	}
-	statGlobal        = make(map[byte]uint)
-	statLocal         = make(map[byte]uint)
+	statGlobal        = make(counts)
+	statLocal         = make(counts)
 	statErrorPatterns = make(map[spair]uint)
 	statMax           = 0
 	statCut           = 0
 )
-
-type spair struct {
-	first, second string
-}
 
 func init() {
 	statCmd.Flags().IntVarP(&statMax, "max", "m",
@@ -47,7 +49,7 @@ func stat(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if _, err := fmt.Fprintf(stdout, "Global: %s\n", countsToString(statGlobal)); err != nil {
+	if _, err := fmt.Fprintf(stdout, "Global: %s\n", statGlobal); err != nil {
 		return err
 	}
 	return printErrorPatterns(stdout)
@@ -64,7 +66,7 @@ func statBlock(b block, stdout io.Writer) error {
 		statGlobal[op]++
 	}
 	addErrorPatterns(b)
-	b.stats = countsToString((statLocal))
+	b.stats = statLocal.String()
 	return b.write(stdout)
 }
 
@@ -137,12 +139,12 @@ func printErrorPatterns(stdout io.Writer) error {
 	return nil
 }
 
-func countsToString(counts map[byte]uint) string {
-	c := counts[lev.Nop]
-	s := counts[lev.Sub]
-	i := counts[lev.Ins]
-	d := counts[lev.Del]
-	res := float64(c) / float64(c+s+i+d)
+func (c counts) String() string {
+	x := c[lev.Nop]
+	s := c[lev.Sub]
+	i := c[lev.Ins]
+	d := c[lev.Del]
+	res := float64(x) / float64(x+s+i+d)
 	return fmt.Sprintf("Acc=c/(c+s+i+d)=%d/(%d+%d+%d+%d)=%f",
-		c, c, s, i, d, res)
+		x, x, s, i, d, res)
 }
