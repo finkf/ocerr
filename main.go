@@ -54,7 +54,7 @@ func init() {
 		"Set the end of block marker")
 	rootCmd.PersistentFlags().StringVarP(
 		&global.separator, "separator", "F", defSep,
-		"Set the sep for prefixes")
+		"Set the separator for prefixes")
 }
 
 func main() {
