@@ -25,6 +25,7 @@ func init() {
 	rootCmd.AddCommand(&matchCmd)
 	rootCmd.AddCommand(&pairCmd)
 	rootCmd.AddCommand(&countCmd)
+	rootCmd.AddCommand(&catCmd)
 	rootCmd.PersistentFlags().StringVarP(
 		&global.endOfBlock, "eob", "b", "%%", "Set the end of block marker")
 	rootCmd.PersistentFlags().StringVarP(
