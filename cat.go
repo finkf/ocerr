@@ -12,10 +12,12 @@ import (
 var (
 	catCmd = cobra.Command{
 		Use:   "cat FILE [FILES...]",
-		Long:  `Concatenates one-line files with their sibling files.`,
 		Short: `Cat lines from files`,
 		RunE:  runCat,
 		Args:  cobra.MinimumNArgs(1),
+		Long: `Concatenates one-line files with their sibling files.
+The sibling of a file is a file with the same name but
+with another extension.`,
 	}
 	cat struct {
 		ext string

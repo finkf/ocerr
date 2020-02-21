@@ -12,13 +12,14 @@ import (
 var (
 	pairCmd = cobra.Command{
 		Use:   "pair",
-		Short: `Pairs multiple files from stdin to stdout`,
+		Short: `Pair multiple lines`,
 		RunE:  runPair,
+		Long: `Reads all N lines from stdin and groups the first line with the
+N/2+1-th line, the second line with the N/2+2-th line and so on.
+If the number of input lines is odd, the last line is silently
+dropped.`,
 	}
 )
-
-func init() {
-}
 
 func runPair(cmd *cobra.Command, args []string) error {
 	return pair(os.Stdin, os.Stdout)

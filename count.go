@@ -12,8 +12,12 @@ import (
 var (
 	countCmd = cobra.Command{
 		Use:   "count",
-		Short: `Counts valid and invalid lines`,
+		Short: `Count matching lines`,
 		RunE:  runCount,
+		Long: `Count the number of matching lines.
+Can be used to calculate the line or word error
+rate (number of matching lines/words divided by
+the number of total lines/words).`,
 	}
 )
 

@@ -19,10 +19,11 @@ type counts map[byte]uint
 var (
 	statCmd = cobra.Command{
 		Use:   "stat",
-		Long:  `Calculate error statistics of alignment blocks`,
-		Short: `Calculate error statistics`,
+		Short: `Display error statistics`,
 		RunE:  runStat,
 		Args:  cobra.ExactArgs(0),
+		Long: `Calculate and display error statistics of
+alignment blocks`,
 	}
 	statGlobal        = make(counts)
 	statLocal         = make(counts)

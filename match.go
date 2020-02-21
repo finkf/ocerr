@@ -11,11 +11,17 @@ import (
 
 var (
 	matchCmd = cobra.Command{
-		Use:   "match pattern [patterns...]",
-		Long:  `Filters blocks that dont match given patterns`,
-		Short: `Filters blocks`,
+		Use:   "match PATTERN [PATTERN...]",
+		Short: `Print blocks that match a pattern`,
 		RunE:  runMatch,
 		Args:  cobra.MinimumNArgs(1),
+		Long: `Printblocks that match PATTERN or PATTERNS...
+A pattern matches strings on the upper line, the
+alignment line and the lower line.  To match any
+character use '.' (it is impossible to match a
+literal dot). So for examplethe pattern 'ab##..'
+matches lines where 'ab' has a substitution with
+any two characters.`,
 	}
 	grepInverted bool
 )

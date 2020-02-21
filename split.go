@@ -11,10 +11,13 @@ import (
 var (
 	splitCmd = cobra.Command{
 		Use:   "split",
-		Long:  `Splits blocks of alignments at a set of characters`,
 		Short: `Split blocks into tokens`,
 		RunE:  runSplit,
 		Args:  cobra.ExactArgs(0),
+		Long: `Split blocks of aligned lines at a set of characters
+and return according sub blocks.  Can be used
+to split e.g. blocks of aligned lines into blocks
+of aligned words.`,
 	}
 	splitCharSet string
 )
