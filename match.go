@@ -15,13 +15,13 @@ var (
 		Short: `Print blocks that match a pattern`,
 		RunE:  runMatch,
 		Args:  cobra.MinimumNArgs(1),
-		Long: `Printblocks that match PATTERN or PATTERNS...
+		Long: `Print blocks that match PATTERN or PATTERNS...
 A pattern matches strings on the upper line, the
 alignment line and the lower line.  To match any
 character use '.' (it is impossible to match a
-literal dot). So for examplethe pattern 'ab##..'
+literal dot). So for example the pattern 'ab##..'
 matches lines where 'ab' has a substitution with
-any two characters.`,
+any two other characters.`,
 	}
 	grepInverted bool
 )
